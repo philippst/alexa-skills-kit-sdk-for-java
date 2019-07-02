@@ -20,6 +20,7 @@ import com.amazon.ask.model.Session;
 import com.amazon.ask.model.Slot;
 import com.amazon.ask.model.SupportedInterfaces;
 import com.amazon.ask.model.User;
+import com.amazon.ask.model.Device;
 import com.amazon.ask.util.ValidationUtils;
 
 import java.util.Map;
@@ -121,10 +122,10 @@ public class RequestHelper {
      * and is generally used as input for some Alexa-specific API calls. More information about this can be found here:
      * https://developer.amazon.com/docs/custom-skills/request-and-response-json-reference.html#system-object
      *
-     * @return device ID
+     * @return an {@link Optional} containing the deviceId if the deviceId exists, else an empty {@link Optional}
      */
-    public String getDeviceId() {
-        return handlerInput.getRequestEnvelope().getContext().getSystem().getDevice().getDeviceId();
+    public Optional<String> getDeviceId() {
+        return Optional.ofNullable(handlerInput.getRequestEnvelope().getContext().getSystem().getDevice()).map(Device::getDeviceId);
     }
 
     /**

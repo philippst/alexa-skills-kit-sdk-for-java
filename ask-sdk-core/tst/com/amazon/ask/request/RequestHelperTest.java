@@ -105,8 +105,23 @@ public class RequestHelperTest {
     }
 
     @Test
-    public void get_device_id_returns_id() {
-        assertEquals(RequestHelper.forHandlerInput(getHandlerInputForRequest(testIntentRequest)).getDeviceId(), "FooId");
+    public void get_device_id_returns_id_when_device_id_is_present() {
+        assertEquals(RequestHelper.forHandlerInput(getHandlerInputForRequest(testIntentRequest)).getDeviceId(), Optional.of("FooId"));
+    }
+
+    @Test
+    public void get_device_id_returns_empty_when_no_device_id() {
+        final Context context = Context.builder()
+                .withSystem(SystemState.builder().build())
+                .build();
+        final RequestEnvelope requestEnvelope = RequestEnvelope.builder()
+                .withRequest(testIntentRequest)
+                .withContext(context)
+                .build();
+        final HandlerInput input = HandlerInput.builder()
+                .withRequestEnvelope(requestEnvelope)
+                .build();
+        assertEquals(RequestHelper.forHandlerInput(input).getDeviceId(), Optional.empty());
     }
 
     @Test
